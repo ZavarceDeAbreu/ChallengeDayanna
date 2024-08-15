@@ -50,6 +50,8 @@ public class ExcelProvinceServiceImpl implements IExcelProvinceService {
             }
         } catch (IOException e) {
             log.error("Error al leer el archivo de Excel", e);
+        } catch (NullPointerException e) {
+            throw new ResourceNotFoundException("province");
         }
 
         return provinces;
@@ -106,6 +108,8 @@ public class ExcelProvinceServiceImpl implements IExcelProvinceService {
         } catch (IOException e) {
             log.error("Error al actualizar la provincia", e);
             throw new ServiceException("Error al actualizar la provincia", e);
+        } catch (NullPointerException e) {
+            throw new ResourceNotFoundException(id.toString());
         }
     }
 
@@ -113,29 +117,37 @@ public class ExcelProvinceServiceImpl implements IExcelProvinceService {
     public void deleteProvince(String filePath, Integer id) throws IOException {
         Workbook workbook = WorkbookFactory.create(new FileInputStream(filePath));
         Sheet sheet = workbook.getSheetAt(0);
-        Optional<Row> rowToDelete = IntStream.range(1, sheet.getLastRowNum() + 1)
-                .mapToObj(sheet::getRow)
-                .filter(row -> row.getCell(0).getNumericCellValue() == id)
-                .findFirst();
+        try {
 
-        if (rowToDelete.isPresent()) {
-            rowToDelete.ifPresent(row -> {
-                int lastRowNum = sheet.getLastRowNum();
-                if (row.getRowNum() < lastRowNum) {
-                    sheet.shiftRows(row.getRowNum() + 1, lastRowNum, -1);
-                }
-                sheet.removeRow(row);
-            });
-        } else {
-            log.warn("Provincia no encontrada para eliminar con ID {} en archivo {}", id, filePath);
+            Optional<Row> rowToDelete = IntStream.range(1, sheet.getLastRowNum() + 1)
+                    .mapToObj(sheet::getRow)
+                    .filter(row -> row.getCell(0).getNumericCellValue() == id)
+                    .findFirst();
+
+            if (rowToDelete.isPresent()) {
+                rowToDelete.ifPresent(row -> {
+                    int rowNum = row.getRowNum();
+                    int lastRowNum = sheet.getLastRowNum();
+                    sheet.removeRow(row); // Elimino la fila primero
+                    if (rowNum < lastRowNum) {
+                        sheet.shiftRows(rowNum + 1, lastRowNum, -1); // Desplaza desde la fila siguiente
+                    }
+                });
+            } else {
+                log.warn("Provincia no encontrada para eliminar con ID {} en archivo {}", id, filePath);
+                throw new ResourceNotFoundException(id.toString());
+            }
+
+            try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
+                workbook.write(outputStream);
+            } catch (IOException e) {
+                log.error("Error al eliminar provincia en archivo {}", filePath, e);
+                throw e;
+            }
+        } catch (NullPointerException e) {
+            throw new ResourceNotFoundException(id.toString());
         }
 
-        try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
-            workbook.write(outputStream);
-        } catch (IOException e) {
-            log.error("Error al eliminar provincia en archivo {}", filePath, e);
-            throw e;
-        }
     }
 
 

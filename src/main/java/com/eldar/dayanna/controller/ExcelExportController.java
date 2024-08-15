@@ -122,7 +122,7 @@ public class ExcelExportController {
 
     @DeleteMapping("/locality/{id}")
     @ResponseBody
-    public ResponseEntity<Void> deleteLocality(@NotNull @RequestParam("filePath") String filePath, @PathVariable Integer id) throws IOException {
+    public ResponseEntity<Void> deleteLocality(@NotNull @PathVariable Integer id, @NotNull @RequestParam("filePath") String filePath) throws IOException {
         excelLocalityService.deleteLocality(filePath, id);
         return ResponseEntity.noContent().build();
     }

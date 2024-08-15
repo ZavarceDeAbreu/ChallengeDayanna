@@ -1,6 +1,5 @@
 package com.eldar.dayanna.model.dto;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -13,8 +12,7 @@ public class LocalityDto {
     @NotBlank(message = "El nombre es requerido")
     private String name;
 
-    @NotBlank(message = "El codigo postal es requerido")
-    @Max(6)
+    @NotNull(message = "El codigo postal es requerido")
     private Short postalCode;
 
     @NotNull(message = "El Id provincia no puede ser nulo")

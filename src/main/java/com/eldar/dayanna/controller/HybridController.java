@@ -36,10 +36,10 @@ public class HybridController {
 
     @GetMapping("/provinces")
     public ResponseEntity<ProvincesDTOResponse> getProvinces(
-            @NotNull @RequestParam("filePath") String filePath,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer id,
-            @RequestParam(required = false) String code31662) {
+            @RequestParam(required = false) String code31662,
+            @NotNull @RequestParam("filePath") String filePath) {
 
         ProvincesDTOResponse response = new ProvincesDTOResponse();
 
@@ -63,10 +63,10 @@ public class HybridController {
 
     @GetMapping("/localities")
     public ResponseEntity<LocalityDTOResponse> getCities(
-            @NotNull @RequestParam("filePath") String filePath,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer id,
-            @RequestParam(required = false) String postalCode) {
+            @RequestParam(required = false) String postalCode,
+            @NotNull @RequestParam("filePath") String filePath) {
 
         LocalityDTOResponse response = new LocalityDTOResponse();
 

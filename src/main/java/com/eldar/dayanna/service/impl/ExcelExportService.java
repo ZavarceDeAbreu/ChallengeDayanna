@@ -85,7 +85,7 @@ public class ExcelExportService implements IExcelExportService {
             row.createCell(0).setCellValue(locality.getId());
             row.createCell(1).setCellValue(locality.getName());
             row.createCell(2).setCellValue(locality.getPostalCode());
-            row.createCell(3).setCellValue(locality.getProvince().getName());
+            row.createCell(3).setCellValue(locality.getProvince().getId());
         }
 
         return workbook;

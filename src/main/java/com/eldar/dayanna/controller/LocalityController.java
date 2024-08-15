@@ -23,7 +23,7 @@ public class LocalityController {
         this.localityService = localityService;
     }
 
-    @GetMapping("/get/")
+    @GetMapping("/get")
     @ResponseBody
     public ResponseEntity<List<LocalityRecord>> getProvinces(
             @RequestParam(required = false) String name,

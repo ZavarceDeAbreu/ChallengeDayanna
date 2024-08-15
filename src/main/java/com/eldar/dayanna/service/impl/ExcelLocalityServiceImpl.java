@@ -89,6 +89,11 @@ public class ExcelLocalityServiceImpl implements IExcelLocalityService {
             throw new RuntimeException("Archivo no encontrado: " + filePath, e);
         } catch (IOException e) {
             log.error("Error al leer el archivo de Excel", e);
+        } catch (NullPointerException e) {
+            throw new ResourceNotFoundException("locality");
+        } catch (Exception e) {
+            log.error("Error al crear la localidad", e);
+            throw new ServiceException("Error al crear la localidad", 0);
         }
     }
 
@@ -106,7 +111,6 @@ public class ExcelLocalityServiceImpl implements IExcelLocalityService {
 
             if (rowToUpdate.isPresent()) {
                 Row row = rowToUpdate.get();
-                row.getCell(0).setCellValue(id);
                 row.getCell(1).setCellValue(updatedLocality.getName());
                 row.getCell(2).setCellValue(updatedLocality.getPostalCode());
                 row.getCell(3).setCellValue(updatedLocality.getProvinceId());
@@ -121,7 +125,9 @@ public class ExcelLocalityServiceImpl implements IExcelLocalityService {
         } catch (FileNotFoundException e) {
             log.error("Archivo no encontrado: {}", filePath, e);
             throw new RuntimeException("Archivo no encontrado: " + filePath, e);
-        } catch (IOException e) {
+        } catch (NullPointerException e) {
+            throw new ResourceNotFoundException(id.toString());
+        } catch (Exception e) {
             log.error("Error al actualizar la localidad", e);
             throw new ServiceException("Error al actualizar la localidad", id);
         }
@@ -129,33 +135,44 @@ public class ExcelLocalityServiceImpl implements IExcelLocalityService {
 
     @Override
     public void deleteLocality(String filePath, Integer id) throws IOException {
-        Workbook workbook = WorkbookFactory.create(new FileInputStream(filePath));
-        Sheet sheet = workbook.getSheetAt(0);
-        Optional<Row> rowToDelete = IntStream.range(1, sheet.getLastRowNum() + 1)
-                .mapToObj(sheet::getRow)
-                .filter(row -> row.getCell(0).getNumericCellValue() == id)
-                .findFirst();
+        try {
 
-        if (rowToDelete.isPresent()) {
-            rowToDelete.ifPresent(row -> {
-                int lastRowNum = sheet.getLastRowNum();
-                if (row.getRowNum() < lastRowNum) {
-                    sheet.shiftRows(row.getRowNum() + 1, lastRowNum, -1);
-                }
-                sheet.removeRow(row);
-            });
-        } else {
-            log.warn("Localidad no encontrada para eliminar con ID {} en archivo {}", id, filePath);
-        }
+            Workbook workbook = WorkbookFactory.create(new FileInputStream(filePath));
+            Sheet sheet = workbook.getSheetAt(0);
+            Optional<Row> rowToDelete = IntStream.range(1, sheet.getLastRowNum() + 1)
+                    .mapToObj(sheet::getRow)
+                    .filter(row -> row.getCell(0).getNumericCellValue() == id)
+                    .findFirst();
 
-        try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
-            workbook.write(outputStream);
-        } catch (FileNotFoundException e) {
-            log.error("Archivo no encontrado: {}", filePath, e);
-            throw new RuntimeException("Archivo no encontrado: " + filePath, e);
-        } catch (IOException e) {
-            log.error("Error al eliminar localidad en archivo {}", filePath, e);
-            throw e;
+            if (rowToDelete.isPresent()) {
+                rowToDelete.ifPresent(row -> {
+                    int rowNum = row.getRowNum();
+                    int lastRowNum = sheet.getLastRowNum();
+                    sheet.removeRow(row); // Elimino la fila primero
+
+                    if (rowNum < lastRowNum) {
+                        // Solo desplazamos si no es la última fila
+                        sheet.shiftRows(rowNum + 1, lastRowNum, -1); // Desplazamos todas las filas hacia arriba
+                    }
+                });
+            } else {
+                log.warn("Localidad no encontrada para eliminar con ID {} en archivo {}", id, filePath);
+            }
+
+            try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
+                workbook.write(outputStream);
+            } catch (FileNotFoundException e) {
+                log.error("Archivo no encontrado: {}", filePath, e);
+                throw new RuntimeException("Archivo no encontrado: " + filePath, e);
+            } catch (IOException e) {
+                log.error("Error al eliminar localidad en archivo {}", filePath, e);
+                throw e;
+            }
+        } catch (NullPointerException e) {
+            throw new ResourceNotFoundException(id.toString());
+        } catch (Exception e) {
+            log.error("Error al eliminar la localidad", e);
+            throw new ServiceException("Error al eliminar la localidad", id);
         }
     }
 }

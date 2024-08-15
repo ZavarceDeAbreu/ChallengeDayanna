@@ -76,7 +76,7 @@ public class LocalityService implements ILocalityService {
             Locality locality = localityRepo.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException(id.toString()));
             locality.setName(updateDto.getName());
-            locality.setPostalCode(updateDto.getPostalCode());
+            locality.setPostalCode(updateDto.getPostalCode().shortValue());
             locality.setProvince(new Province(updateDto.getProvinceId()));
             localityRepo.save(locality);
             return localityToRecord(locality);

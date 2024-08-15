@@ -22,7 +22,7 @@ public class ProvinceController {
         this.provinceService = provinceService;
     }
 
-    @GetMapping("/get/")
+    @GetMapping("/get")
     @ResponseBody
     public ResponseEntity<List<ProvinceRecord>> getProvinces(
             @RequestParam(required = false) String name,
