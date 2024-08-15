@@ -117,7 +117,7 @@ objetivos y se entregara la aplicación en el tiempo estimado.
 
 # API Documentation
 
-## Excel Export API Documentation
+## Excel Export
 
 * Este conjunto de endpoints permite interactuar con archivos Excel para gestionar provincias y localidades. Las
   operaciones incluyen la descarga de archivos ZIP, la creación, actualización, eliminación y búsqueda de provincias y
@@ -187,7 +187,7 @@ Este endpoint permite crear una nueva provincia en un archivo Excel.
 - Código: 201 Create
 - Contenido: Ninguno.
 
-#### **4. Actualizar una Provincia**
+#### **Actualizar una Provincia**
 
 ## Actualizar Provincia
 
@@ -216,7 +216,7 @@ Este endpoint permite actualizar una provincia existente en un archivo Excel.
 - Código: 200 Ok
 - Contenido: Ninguno.
 
-#### **5. Eliminar una Provincia**
+#### **Eliminar una Provincia**
 
 ## Eliminar Provincia
 
@@ -290,7 +290,7 @@ Este endpoint permite crear una nueva localidad en un archivo Excel.
 - Código: 202 Create
 - Contenido: Ninguno.
 
-#### **8. Actualizar una Localidad**
+#### **Actualizar una Localidad**
 
 ## Actualizar Localidad
 
@@ -320,7 +320,7 @@ Este endpoint permite actualizar una localidad existente en un archivo Excel.
 - Código: 200 OK
 - Contenido: Ninguno.
 
-#### **9. Eliminar una Localidad**
+#### **Eliminar una Localidad**
 
 ## Eliminar Localidad
 
@@ -340,7 +340,7 @@ Este endpoint permite eliminar una localidad de un archivo Excel.
   ```http
   DELETE /excel/locality/456?filePath=ruta/al/archivo.xlsx
 
-# HybridController API Documentation
+# HybridController
 
 Este controlador ofrece endpoints para consultar provincias y localidades, con la capacidad de extraer datos tanto de un
 archivo Excel como de una base de datos. Los tiempos de ejecución de las consultas también son devueltos.
@@ -496,7 +496,7 @@ como en una base de datos. Devuelve los resultados de ambos junto con el tiempo 
 Este controlador permite gestionar localidades mediante operaciones CRUD (Crear, Leer, Actualizar, Eliminar). A
 continuación, se describen los endpoints disponibles.
 
-### 1. Obtener Localidades
+### Obtener Localidades
 
 **Descripción:** Este endpoint permite obtener una lista de localidades filtradas por nombre, ID o código.
 
@@ -522,7 +522,7 @@ continuación, se describen los endpoints disponibles.
           }
       ```
 
-### 2. Crear Localidad
+### Crear Localidad
 
 **Descripción:** Este endpoint permite crear una nueva localidad.
 
@@ -543,7 +543,7 @@ continuación, se describen los endpoints disponibles.
 - Código: 201 Create
 - Contenido: Ninguno.
 
-### 3 Actualizar Localidad
+### Actualizar Localidad
 
 **Descripción:** Este endpoint permite actualizar la información de una localidad existente.
 
