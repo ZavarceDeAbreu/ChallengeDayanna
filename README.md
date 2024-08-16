@@ -26,13 +26,15 @@ Este proyecto es una aplicación web que permite gestionar provincias y localida
 
 ## Instalación
 
-1. Clonar el repositorio: `git clone https://github.com/tu-usuario/proyecto.git`
-2. Instalar las dependencias: `mvn clean install` (si estás utilizando Maven) o `gradle build` (si estás utilizando
-   Gradle)
+1. Clonar el repositorio: `https://github.com/ZavarceDeAbreu/ChallengeDayanna.git`
+2. Instalar las dependencias: `mvn clean install` 
 3. Configurar la base de datos:
     * Crear una base de datos en Postgres llamada `provincias_localidades`
-    * Agregar las credenciales de la base de datos en el archivo `application.properties` (si estás utilizando Spring
-      Boot)
+    * Agregar las credenciales de la base de datos en el archivo `application.properties`
+    * Una vez inicializada la base de datos cambiar la propiedad :
+      ```http
+      spring.jpa.defer-datasource-initialization=false
+ 
 4. Ejecutar la aplicación: `mvn spring-boot:run`
 
 ## Estructura del Proyecto
@@ -42,9 +44,9 @@ Este proyecto es una aplicación web que permite gestionar provincias y localida
         - `DayannaZavarceApplication.java`: Clase principal de la aplicación
         - `controllers`: Paquete que contiene los controladores de la aplicación
         - `services`: Paquete que contiene los servicios de la aplicación
-          -`model` : Paquete que contiene el modelo y DTO de la aplicacion
+        - `model` : Paquete que contiene el modelo y DTO de la aplicacion
         - `Excepciones` : Manejador de excepciones personalizado
-        - `Utilidades`
+        - `Utilidades`: paquete de utilidades
 
 # Patrones de Diseño Implementados
 
