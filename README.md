@@ -31,11 +31,12 @@ Este proyecto es una aplicación web que permite gestionar provincias y localida
 3. Configurar la base de datos:
     * Crear una base de datos en Postgres llamada `provincias_localidades`
     * Agregar las credenciales de la base de datos en el archivo `application.properties`
-    * Una vez inicializada la base de datos cambiar la propiedad :
+    * * Una vez inicializada la base de datos cambiar la propiedad :
       ```http
       spring.jpa.defer-datasource-initialization=false
+4. Configurar la variable : `logging.file.name`
  
-4. Ejecutar la aplicación: `mvn spring-boot:run`
+5. Ejecutar la aplicación: `mvn spring-boot:run`
 
 ## Estructura del Proyecto
 
